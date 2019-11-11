@@ -3,21 +3,23 @@ package pl.coderslab.charity.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Getter
-@Setter
 @Entity
 @Table(name = "institution")
 public class Institution {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private int id;
 
+    @Getter @Setter
     private String name;
+
+    @Getter @Setter
     private String description;
 }
