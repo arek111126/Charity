@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.repository.CategoryRepository;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -23,5 +25,8 @@ public class CategoryService {
 
     public Category findById(int id) {
         return categoryRepository.findFirstById(id);
+    }
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 }

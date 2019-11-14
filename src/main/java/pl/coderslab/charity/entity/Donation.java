@@ -5,9 +5,9 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -37,11 +37,26 @@ public class Donation {
     private String street;
 
     @Getter @Setter
+    private String city;
+
+    @Getter @Setter
     private String zipCode;
+
+    @Getter @Setter
+    private String phone;
 
     @Getter @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime pickUpDateTime;
+
+    @Transient
+    @Getter @Setter
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate pickUpDate;
+
+    @Transient
+    @Getter @Setter
+    private LocalTime pickUpTime;
 
     @Getter @Setter
     private String pickUpComment;

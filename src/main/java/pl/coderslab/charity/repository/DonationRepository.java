@@ -7,7 +7,7 @@ import pl.coderslab.charity.model.StatisticData;
 
 import java.util.List;
 
-public interface DonatioRepository extends JpaRepository<Donation, Integer> {
+public interface DonationRepository extends JpaRepository<Donation, Integer> {
     Donation findFirstById(int id);
 
     @Query("SELECT new pl.coderslab.charity.model.StatisticData(" +

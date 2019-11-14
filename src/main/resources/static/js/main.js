@@ -1,12 +1,12 @@
 $(function () {
 
     $.ajax({
-        url: "/app/institution/getAll",
+        url: "/app/institution/",
         data: {},
         type: "GET",
         dataType: "json"
     }).done(function (result) {
-        var instytutionTree = $(".help--slides .help--slides-items");
+
 
         $.each(result, function (i, item) {
             var div = $("<div class=\"col\">\n" +
@@ -26,10 +26,10 @@ $(function () {
         console.log(xhr);
         console.log(status);
         console.log(err);
-    })
+    });
 
     $.ajax({
-        url: "/app/donation/staticData",
+        url: "/app/donation/statistic",
         data: {},
         type: "GET",
         dataType: "json"
