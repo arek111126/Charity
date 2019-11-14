@@ -1,4 +1,13 @@
 $(function () {
+    function Errors(xhr, status, err) {
+        console.log(xhr);
+        console.log(status);
+        console.log(err);
+    }
+
+    function mod(i) {
+        return i % 2;
+    }
 
     $.ajax({
         url: "/app/institution/",
@@ -13,7 +22,7 @@ $(function () {
                 "                    <div class=\"title\">" + item.name + "</div>\n" +
                 "                    <div class=\"subtitle\">" + item.description + "</div>\n" +
                 "                </div>");
-            if (i % 2 == 0) {
+            if (mod(i) == 0) {
                 $(".help--slides .help--slides-items").append($("<li></li>"));
             }
             $(".help--slides .help--slides-items li:last-child").append(div);
@@ -23,9 +32,8 @@ $(function () {
 
 
     }).fail(function (xhr, status, err) {
-        console.log(xhr);
-        console.log(status);
-        console.log(err);
+
+        Errors(xhr, status, err);
     });
 
     $.ajax({
@@ -38,9 +46,7 @@ $(function () {
         $(".stats .container div:last-child em").text(result.sumCategory);
 
     }).fail(function (xhr, status, err) {
-        console.log(xhr);
-        console.log(status);
-        console.log(err);
+        Errors(xhr, status, err);
     });
 
 });

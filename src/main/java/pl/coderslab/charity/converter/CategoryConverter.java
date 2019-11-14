@@ -21,9 +21,5 @@ public class CategoryConverter implements Converter<String, Category> {
     public Category convert(String id) {
         int parseInt = Integer.parseInt(id);
         return categoryService.findById(parseInt);
-      //  Category newCategory = new Category();
-      //   newCategory.setName(name);
-       //  return newCategory;
-
     }
 }

@@ -5,6 +5,10 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,43 +26,63 @@ public class Donation {
     @Getter
     private int id;
 
-    @Getter @Setter
+    @Getter
+    @Setter
+    @Min(value = 1)
     private int quantity;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @ManyToMany
+    @NotEmpty
     private List<Category> categories;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @ManyToOne
+    @NotNull
     private Institution institution;
 
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotBlank
     private String street;
 
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotBlank
     private String city;
 
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotBlank
     private String zipCode;
 
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotBlank
     private String phone;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime pickUpDateTime;
 
     @Transient
-    @Getter @Setter
+    @Getter
+    @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private LocalDate pickUpDate;
 
     @Transient
-    @Getter @Setter
+    @Getter
+    @Setter
+    @NotNull
     private LocalTime pickUpTime;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String pickUpComment;
 
 
