@@ -26,7 +26,7 @@ public class Donation {
     private int quantity;
 
     @Getter @Setter
-    @OneToMany
+    @ManyToMany
     private List<Category> categories;
 
     @Getter @Setter

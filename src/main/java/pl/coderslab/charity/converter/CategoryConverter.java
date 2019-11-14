@@ -19,8 +19,11 @@ public class CategoryConverter implements Converter<String, Category> {
 
     @Override
     public Category convert(String id) {
-        int parsedId = Integer.parseInt(id);
-        return categoryService.findById(parsedId);
+        int parseInt = Integer.parseInt(id);
+        return categoryService.findById(parseInt);
+      //  Category newCategory = new Category();
+      //   newCategory.setName(name);
+       //  return newCategory;
 
     }
 }

@@ -30,6 +30,7 @@ public class DonationController {
     @Autowired
     DonationService donationService;
 
+
     @ModelAttribute("allCategories")
     public List<Category> getAllCategories() {
         return categoryService.findAll();
@@ -51,7 +52,7 @@ public class DonationController {
     @PostMapping("/add")
     public String addDonation(@ModelAttribute("donation") Donation donation, Model model) {
         donation.setPickUpDateTime(LocalDateTime.of(donation.getPickUpDate(), donation.getPickUpTime()));
-       donationService.save(donation);
+        donationService.save(donation);
         return "form";
 
     }
