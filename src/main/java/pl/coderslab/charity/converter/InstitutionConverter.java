@@ -5,6 +5,9 @@ import org.springframework.core.convert.converter.Converter;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.InstitutionService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InstitutionConverter implements Converter<String, Institution> {
 
     @Autowired
@@ -12,7 +15,8 @@ public class InstitutionConverter implements Converter<String, Institution> {
 
     @Override
     public Institution convert(String id) {
-        int parsedId = Integer.parseInt(id);
-        return institutionService.findById(parsedId);
+
+        return institutionService.findById(Integer.parseInt(id));
+
     }
 }

@@ -1,9 +1,11 @@
 package pl.coderslab.charity.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +24,11 @@ public class Institution {
 
     @Getter @Setter
     private String description;
+
+    @JsonIgnore
+    @Getter @Setter
+    @ManyToMany
+    private List<Category> category;
 
 
 }

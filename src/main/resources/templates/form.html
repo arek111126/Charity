@@ -88,7 +88,7 @@
                 <h3>Zaznacz co chcesz oddać:</h3>
 
 
-                <div th:each="category : ${allCategories}" class="form-group form-group--checkbox">
+                <div id="donations" th:each="category : ${allCategories}" class="form-group form-group--checkbox">
                     <label>
                         <input type="checkbox" th:field="*{categories}"  th:value="${category.id}"/>
                         <span class="checkbox"></span>
@@ -98,7 +98,7 @@
 
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn next-step">Dalej</button>
+                    <button id="next1" type="button" class="btn next-step">Dalej</button>
                 </div>
             </div>
 
@@ -114,27 +114,17 @@
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
+                    <button id="combackTocategory" type="button" class="btn prev-step">Wstecz</button>
                     <button type="button" class="btn next-step">Dalej</button>
                 </div>
             </div>
 
 
             <!-- STEP 4 -->
-            <div data-step="3">
+            <div id="institutionList" data-step="3">
                 <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
-                <div th:each="institutionItem : ${allInstitution}" class="form-group form-group--checkbox">
-                    <label>
-                        <input th:field="*{institution}" th:value="${institutionItem.id}" type="radio"
-                               name="organization" value="old"/>
-                        <span class="checkbox radio"></span>
-                        <span class="description">
-                  <div class="title" th:text="${institutionItem.name}"></div>
-                  <div class="subtitle" th:text="${institutionItem.description}"></div>
-                </span>
-                    </label>
-                </div>
+
 
 
                 <div class="form-group form-group--buttons">

@@ -1,5 +1,9 @@
 $(function () {
-
+    function Errors(xhr, status, err) {
+        console.log(xhr);
+        console.log(status);
+        console.log(err);
+    }
 
     $("#summaryButton").on("click", function () {
         // Fundation name and number of bags
@@ -36,7 +40,47 @@ $(function () {
             recipeData.children(":nth-child(3)").text("Brak uwag");
         }
 
-    })
+    });
+    //After choose category find containg category institution
+    $("#next1").on('click', function () {
+        var checkedChecboxes = [];
+        $("input[name='categories']:checked").each(function () {
+            checkedChecboxes.push($(this).val());
+        });
+        var requestUrl = "/app/category/" + checkedChecboxes + "/institution"
+        $.ajax({
+            url: requestUrl,
+            data: {},
+            type: "GET",
+            dataType: "json"
+        }).done(function (result) {
+            $(result).each(function () {
+                var newDiv = $("<div class=\"form-group form-group--checkbox institutions\">\n" +
+                    "                    <label>\n" +
+                    "                        <input type=\"radio\" name=\"institution\" value=" + this.id + ">\n" +
+                    "                        <span class=\"checkbox radio\"></span>\n" +
+                    "                        <span class=\"description\">\n" +
+                    "                  <div class=\"title\">" + this.name + "</div>\n" +
+                    "                  <div class=\"subtitle\">" + this.description + "</div>\n" +
+                    "                </span>\n" +
+                    "                    </label>\n" +
+                    "                </div>")
+                $("div[id='institutionList']").find("h3").after(newDiv);
 
+
+
+            })
+
+
+        }).fail(function (xhr, status, err) {
+            Errors(xhr, status, err);
+        })
+
+
+    });
+    //if click comback button delete current institution
+$("#combackTocategory").on('click',function () {
+    $(".institutions").remove();
+});
 
 });

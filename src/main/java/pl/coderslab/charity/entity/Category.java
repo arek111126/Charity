@@ -2,6 +2,7 @@ package pl.coderslab.charity.entity;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +19,8 @@ public class Category {
 
     @Getter @Setter
     private String name;
+
+    @Getter @Setter
+    @ManyToMany(mappedBy = "category")
+    private List<Institution> institutions;
 }
