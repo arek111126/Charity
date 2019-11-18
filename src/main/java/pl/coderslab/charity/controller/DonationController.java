@@ -14,10 +14,10 @@ import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.CategoryService;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/app/donation")
@@ -33,6 +33,8 @@ public class DonationController {
     DonationService donationService;
 
 
+
+
     @ModelAttribute("allCategories")
     public List<Category> getAllCategories() {
         return categoryService.findAll();
@@ -45,6 +47,7 @@ public class DonationController {
 
     @GetMapping("/add")
     public String getForm(Model model) {
+
         model.addAttribute("donation", new Donation());
 
         return "form";
@@ -54,7 +57,7 @@ public class DonationController {
     @PostMapping("/add")
     public String addDonation(@Valid Donation donation, BindingResult result, Model model) {
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             return "form";
         }
         donation.setPickUpDateTime(LocalDateTime.of(donation.getPickUpDate(), donation.getPickUpTime()));
