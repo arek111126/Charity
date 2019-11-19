@@ -78,43 +78,20 @@
     </nav>
 
     <div class="slogan container container--90">
-        <table id="myTable" class="w3-table-all">
+        <table id="myTable" class="w3-table-all" style="font-size: 15px">
             <tr>
-                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Name</th>
-                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Country</th>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Status Odebrania</th>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Data Odebrania</th>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Data utworzenia</th>
+                <th  style="cursor:pointer">szczegóły</th>
             </tr>
-            <tr class="item">
-                <td>Berglunds snabbköp</td>
-                <td>Sweden</td>
+            <tr class="item" th:each="donation,iter : ${donations}">
+                <td th:text="${donation.received} ? 'Odebrany' : 'Nie odebrany'" />
+                <td th:text="${donation.realPickUpDateTime} ? ${donation.realPickUpDateTime} : ''"></td>
+                <td  th:text="${donation.creationDate}"></td>
+                <td><a style="text-decoration: underline" th:href="@{/app/donation/detail(id=${donation.id})}">szczegóły</a></td>
             </tr>
-            <tr class="item">
-                <td>North/South</td>
-                <td>UK</td>
-            </tr>
-            <tr class="item">
-                <td>Alfreds Futterkiste</td>
-                <td>Germany</td>
-            </tr>
-            <tr class="item">
-                <td>Königlich Essen</td>
-                <td>Germany</td>
-            </tr>
-            <tr class="item">
-                <td>Magazzini Alimentari Riuniti</td>
-                <td>Italy</td>
-            </tr>
-            <tr class="item">
-                <td>Paris spécialités</td>
-                <td>France</td>
-            </tr>
-            <tr class="item">
-                <td>Island Trading</td>
-                <td>UK</td>
-            </tr>
-            <tr class="item">
-                <td>Laughing Bacchus Winecellars</td>
-                <td>Canada</td>
-            </tr>
+
         </table>
       </div>
     </div>

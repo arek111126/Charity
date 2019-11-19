@@ -3,8 +3,11 @@ package pl.coderslab.charity.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.entity.Donation;
+import pl.coderslab.charity.entity.authentication.User;
 import pl.coderslab.charity.model.StatisticData;
 import pl.coderslab.charity.repository.DonationRepository;
+
+import java.util.List;
 
 @Service
 public class DonationService {
@@ -27,5 +30,10 @@ public class DonationService {
 
     public StatisticData countStatisticData(){
         return donatioRepository.countStatisticData();
+    }
+
+
+    public List<Donation> findAllbyUser(User user){
+        return donatioRepository.findAllByUser(user);
     }
 }

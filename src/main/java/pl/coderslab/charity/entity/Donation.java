@@ -1,8 +1,10 @@
 package pl.coderslab.charity.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import pl.coderslab.charity.entity.authentication.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -76,5 +78,46 @@ public class Donation {
     @Getter @Setter
     private String pickUpComment;
 
+    @Getter @Setter
+    private int received;
 
+    @Getter @Setter
+    private String creationDate;
+
+    @Getter @Setter
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime realPickUpDateTime;
+
+    @Getter @Setter
+    @ManyToOne
+    @JsonIgnore
+    private User user;
+
+    @PrePersist
+    public void setCreatedDate() {
+        LocalDate localDate = LocalDate.now();
+        this.creationDate = localDate.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Donation{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", categories=" + categories +
+                ", institution=" + institution +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", phone='" + phone + '\'' +
+                ", pickUpDateTime=" + pickUpDateTime +
+                ", pickUpDate=" + pickUpDate +
+                ", pickUpTime=" + pickUpTime +
+                ", pickUpComment='" + pickUpComment + '\'' +
+                ", received=" + received +
+                ", creationDate='" + creationDate + '\'' +
+                ", realPickUpDateTime=" + realPickUpDateTime +
+                ", user=" + user +
+                '}';
+    }
 }

@@ -51,8 +51,7 @@ public class User {
     private List<Role> roles;
 
     @JsonIgnore
-    @OneToMany
-    @JoinColumn(name = "id_user")
+    @OneToMany(mappedBy = "user")
     private List<Donation> donations;
     public User() {
         roles = new ArrayList<>();
