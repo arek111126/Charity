@@ -40,10 +40,7 @@ public class DonationController {
         return categoryService.findAll();
     }
 
-    @ModelAttribute("allInstitution")
-    public List<Institution> getAllInstitution() {
-        return institutionService.findAll();
-    }
+
 
     @GetMapping("/add")
     public String getForm(Model model) {
@@ -64,5 +61,12 @@ public class DonationController {
         donationService.save(donation);
         return "form-confirmation";
 
+    }
+
+    @GetMapping("/userDonation")
+    public String userDonation(Model model){
+
+
+        return "user-donation";
     }
 }

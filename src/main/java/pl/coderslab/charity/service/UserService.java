@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.charity.entity.authentication.User;
 import pl.coderslab.charity.repository.UserRepository;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -13,5 +15,8 @@ public class UserService {
 
    public User  save(User user){
         return userRepository.save(user);
+    }
+    public User findByEmail(String email){
+       return userRepository.findFirstByEmail(email);
     }
 }

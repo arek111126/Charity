@@ -13,6 +13,7 @@ import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.InstitutionService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,18 +34,17 @@ public class CategoryController {
                                 List<String> categoryNameList = categoryId.stream()
                                         .filter(c -> category.getId() == Integer.parseInt(c))
                                         .collect(Collectors.toList());
-                                boolean returnCondition = categoryNameList.size() > 0 ? true : false;
-                                return returnCondition;
+                                return !categoryNameList.isEmpty();
                             }).collect(Collectors.toList());
-                    boolean returnCondition = categoryStream.size() == categoryId.size() ? true : false;
-                    return returnCondition;
+                    return categoryStream.size() == categoryId.size();
 
                 }).collect(Collectors.toList());
 
-        if (findedInstitution.size() > 0) {
+        if (!findedInstitution.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(findedInstitution);
-        } else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
+
 }

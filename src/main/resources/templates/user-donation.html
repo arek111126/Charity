@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/local.css}" rel="stylesheet"/>
+
+      <script th:src="@{https://www.w3schools.com/lib/w3.js}"></script>
+      <style>
+          table {
+              border-collapse: collapse;
+              width: 100%;
+          }
+
+          th, td {
+              text-align: left;
+              padding: 8px;
+          }
+
+          tr:nth-child(even){background-color: #f2f2f2}
+          tr:nth-child(odd) {background: #d9d9d9 }
+          th {
+              background-color: grey;
+              color: white;
+          }
+
+
+
+          .headerSortDown:after,
+          .headerSortUp:after {
+              content: ' ';
+              position: relative;
+              left: 2px;
+              border: 8px solid transparent;
+          }
+
+          .headerSortDown:after {
+              top: 10px;
+              border-top-color: silver;
+          }
+
+          .headerSortUp:after {
+              bottom: 15px;
+              border-bottom-color: silver;
+          }
+
+          .headerSortDown,
+          .headerSortUp {
+              padding-right: 10px;
+          }
+
+      </style>
+  </head>
+  <body>
+  <header class="header--form-page">
+    <nav class="container container--70">
+      <ul class="nav--actions">
+        <li class="logged-user">
+          Witaj Agata
+          <ul class="dropdown">
+            <li><a href="#">Profil</a></li>
+            <li><a href="#">Moje zbiórki</a></li>
+            <li><a href="#">Wyloguj</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul>
+        <li><a href="index.html" class="btn btn--without-border active">Start</a></li>
+        <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
+        <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
+        <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+        <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
+      </ul>
+    </nav>
+
+    <div class="slogan container container--90">
+        <table id="myTable" class="w3-table-all">
+            <tr>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Name</th>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Country</th>
+            </tr>
+            <tr class="item">
+                <td>Berglunds snabbköp</td>
+                <td>Sweden</td>
+            </tr>
+            <tr class="item">
+                <td>North/South</td>
+                <td>UK</td>
+            </tr>
+            <tr class="item">
+                <td>Alfreds Futterkiste</td>
+                <td>Germany</td>
+            </tr>
+            <tr class="item">
+                <td>Königlich Essen</td>
+                <td>Germany</td>
+            </tr>
+            <tr class="item">
+                <td>Magazzini Alimentari Riuniti</td>
+                <td>Italy</td>
+            </tr>
+            <tr class="item">
+                <td>Paris spécialités</td>
+                <td>France</td>
+            </tr>
+            <tr class="item">
+                <td>Island Trading</td>
+                <td>UK</td>
+            </tr>
+            <tr class="item">
+                <td>Laughing Bacchus Winecellars</td>
+                <td>Canada</td>
+            </tr>
+        </table>
+      </div>
+    </div>
+  </header>
+
+
+
+
+  <footer th:replace="footer :: footer"/>
+  <script th:src="@{/js/user-dotation.js}"></script>
+  </body>
+</html>

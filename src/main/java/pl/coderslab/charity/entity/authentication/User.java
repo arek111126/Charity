@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import pl.coderslab.charity.entity.Donation;
+import pl.coderslab.charity.validate.ConfirmPassword;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
+@ConfirmPassword
 public class User {
 
     @Getter
@@ -33,10 +36,6 @@ public class User {
     @Transient
     private String retypePassword;
 
-    @Getter
-    @Setter
-    @Transient
-    private String currentPassword;
 
 
     @Getter
@@ -58,6 +57,18 @@ public class User {
     public User() {
         roles = new ArrayList<>();
     }
+
+    @Getter
+    @Setter
+    private String firstName;
+
+    @Getter
+    @Setter
+    private String secondName;
+
+
+
+
 
 
 }
