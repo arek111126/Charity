@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.entity.authentication.User;
+import pl.coderslab.charity.service.RoleService;
 import pl.coderslab.charity.service.UserService;
 
 @Controller
@@ -19,11 +20,14 @@ public class UserAdminController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    RoleService roleService;
+
 
     @GetMapping("/user/all")
     public String getAllUsers(Model model) {
 
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users",userService.findUsersByRolesNotContains(roleService.findFirstByRoleName("ROLE_ADMIN")));
 
         return "adminTemplates/all-user";
     }

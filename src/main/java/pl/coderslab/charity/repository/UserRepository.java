@@ -12,5 +12,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
             User findByDonations(Donation donation);
             User findById(int id);
             List<User> findUsersByRolesContains(Role role);
+            List<User> findUsersByRolesNotContains(Role role);
 
 }

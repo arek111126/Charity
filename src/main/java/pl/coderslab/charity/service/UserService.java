@@ -43,5 +43,9 @@ public class UserService {
     public List<User> findUsersByRolesContains(Role role){
        return userRepository.findUsersByRolesContains(role);
     }
+    public List<User> findUsersByRolesNotContains(Role role){
+       return userRepository.findUsersByRolesNotContains(role);
+    }
+
 
 }
