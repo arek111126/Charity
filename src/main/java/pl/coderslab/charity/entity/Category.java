@@ -1,12 +1,13 @@
 package pl.coderslab.charity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 @Entity
 @Table(name = "category")
 public class Category {
@@ -20,7 +21,17 @@ public class Category {
     @Getter @Setter
     private String name;
 
+    @JsonIgnore
     @Getter @Setter
-    @ManyToMany(mappedBy = "category")
+    @ManyToMany(mappedBy = "categories")
     private List<Institution> institutions;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", institutions=" + institutions +
+                '}';
+    }
 }

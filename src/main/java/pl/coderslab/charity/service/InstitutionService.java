@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class InstitutionService {
+
     @Autowired
     InstitutionRepository institutionRepository;
 
@@ -26,7 +27,8 @@ public class InstitutionService {
     public Institution findById(int id) {
         return institutionRepository.findFirstById(id);
     }
-    public List<Institution> findAll(){
+
+    public List<Institution> findAll() {
         return institutionRepository.findAll();
     }
 }

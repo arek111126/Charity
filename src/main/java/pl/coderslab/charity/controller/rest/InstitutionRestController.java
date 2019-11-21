@@ -14,8 +14,8 @@ import pl.coderslab.charity.service.InstitutionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/app/institution")
-public class InstitutionController {
+@RequestMapping("c")
+public class InstitutionRestController {
 
     @Autowired
     InstitutionService institutionService;

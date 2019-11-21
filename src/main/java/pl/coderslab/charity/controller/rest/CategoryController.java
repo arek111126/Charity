@@ -13,9 +13,7 @@ import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.InstitutionService;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/app/category")
@@ -29,7 +27,7 @@ public class CategoryController {
         List<Institution> allIntitution = institutionService.findAll();
         List<Institution> findedInstitution = allIntitution.stream()
                 .filter(institution -> {
-                    List<Category> categoryStream = institution.getCategory().stream()
+                    List<Category> categoryStream = institution.getCategories().stream()
                             .filter(category -> {
                                 List<String> categoryNameList = categoryId.stream()
                                         .filter(c -> category.getId() == Integer.parseInt(c))

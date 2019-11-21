@@ -65,6 +65,14 @@ public class User {
     @Setter
     private String secondName;
 
+    @Transient
+    @Getter @Setter
+    private boolean changePassword;
+
+    @Transient
+    @Getter @Setter
+    private int hiddenId;
+
 
 
 

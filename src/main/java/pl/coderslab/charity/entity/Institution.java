@@ -3,13 +3,14 @@ package pl.coderslab.charity.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 @Entity
 @Table(name = "institution")
 public class Institution {
@@ -25,10 +26,12 @@ public class Institution {
     @Getter @Setter
     private String description;
 
-    @JsonIgnore
+
     @Getter @Setter
     @ManyToMany
-    private List<Category> category;
+    private List<Category> categories;
 
-
+    @Transient
+    @Getter @Setter
+    private int hiddenId;
 }
