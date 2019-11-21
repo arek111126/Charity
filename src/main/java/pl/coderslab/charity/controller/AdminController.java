@@ -3,6 +3,7 @@ package pl.coderslab.charity.controller;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,9 @@ public class AdminController {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @ModelAttribute("allCategories")
     public List<Category> getAllCategories() {
         return categoryService.findAll();
@@ -49,20 +53,20 @@ public class AdminController {
     }
 
 
-    @GetMapping("/admin/all")
+    @GetMapping("/all")
     public String ShowAllAdmins(Model model){
 
         model.addAttribute("users",userService.findUsersByRolesContains(roleService.findFirstByRoleName("ROLE_ADMIN")));
 
         return "adminTemplates/all-admin";
     }
-    @PostMapping("/admin/{id}/delete")
+    @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable int id, Model model) {
         userService.delete(userService.findById(id));
-        return "redirect:/admin/admin/all";
+        return "redirect:/admin/all";
     }
 
-    @PostMapping("/admin/{id}/block")
+    @PostMapping("/{id}/block")
     public String blockUser(@PathVariable int id, Model model) {
         User user = userService.findById(id);
         user.setRetypePassword(user.getPassword());
@@ -72,7 +76,33 @@ public class AdminController {
             user.setEnabled(1);
         }
         userService.save(user);
-        return "redirect:/admin/admin/all";
+        return "redirect:/admin/all";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String getEditedPage(@PathVariable int id, Model model) {
+        User user = userService.findById(id);
+        user.setHiddenId(user.getId());
+        model.addAttribute("user", user);
+        return "adminTemplates/edit-admin";
+    }
+    @PostMapping("/edit")
+    public String editUser(@ModelAttribute("user") User user) {
+        User userFromDatabase = userService.findById(user.getHiddenId());
+        if (user.isChangePassword()) {
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            userFromDatabase.setPassword(encodedPassword);
+            userFromDatabase.setRetypePassword(encodedPassword);
+        }else{
+            userFromDatabase.setRetypePassword(userFromDatabase.getPassword());
+        }
+        userFromDatabase.setFirstName(user.getFirstName());
+        userFromDatabase.setSecondName(user.getSecondName());
+        userFromDatabase.setEmail(user.getEmail());
+        userFromDatabase.setEnabled(1);
+        userService.save(userFromDatabase);
+
+        return "redirect:/admin/all";
     }
 
 

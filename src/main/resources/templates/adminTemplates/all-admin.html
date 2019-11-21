@@ -77,18 +77,18 @@
                             <td th:text="${user.firstName}"></td>
                             <td th:text="${user.secondName}"></td>
                             <td>
-                                <form method="get" th:action="@{/admin/admin/{id}/edit(id= ${user.id})}">
+                                <form method="get" th:action="@{/admin/{id}/edit(id= ${user.id})}">
                                     <button class="btn" type="submit">Edytuj</button>
                                 </form>
                             </td>
                             <td>
-                                <form method="post" th:action="@{/admin/admin/{id}/block(id= ${user.id})}">
+                                <form method="post" th:action="@{/admin/{id}/block(id= ${user.id})}">
                                     <button class="btn" type="submit"
                                             th:text="${user.enabled} ? 'Zablokuj' : 'Odblokuj'"></button>
                                 </form>
                             </td>
                             <td>
-                                <form method="post" th:action="@{/admin/admin/{id}/delete(id= ${user.id})}">
+                                <form method="post" th:action="@{/admin/{id}/delete(id= ${user.id})}">
                                     <button class="btn" type="submit">Usuń</button>
                                 </form>
                             </td>
