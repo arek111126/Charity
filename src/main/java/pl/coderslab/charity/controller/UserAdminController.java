@@ -27,19 +27,19 @@ public class UserAdminController {
     @GetMapping("/user/all")
     public String getAllUsers(Model model) {
 
-        model.addAttribute("users",userService.findUsersByRolesNotContains(roleService.findFirstByRoleName("ROLE_ADMIN")));
+        model.addAttribute("users", userService.findUsersByRolesNotContains(roleService.findFirstByRoleName("ROLE_ADMIN")));
 
         return "adminTemplates/all-user";
     }
 
     @PostMapping("/user/{id}/delete")
-    public String deleteUser(@PathVariable int id, Model model) {
+    public String deleteUser(@PathVariable int id) {
         userService.delete(userService.findById(id));
         return "redirect:/admin/user/all";
     }
 
     @PostMapping("/user/{id}/block")
-    public String blockUser(@PathVariable int id, Model model) {
+    public String blockUser(@PathVariable int id) {
         User user = userService.findById(id);
         user.setRetypePassword(user.getPassword());
         if (user.getEnabled() == 1) {
@@ -66,7 +66,7 @@ public class UserAdminController {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             userFromDatabase.setPassword(encodedPassword);
             userFromDatabase.setRetypePassword(encodedPassword);
-        }else{
+        } else {
             userFromDatabase.setRetypePassword(userFromDatabase.getPassword());
         }
         userFromDatabase.setFirstName(user.getFirstName());

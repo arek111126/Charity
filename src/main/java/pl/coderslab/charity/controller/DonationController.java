@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.config.UserInSessionService;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.authentication.User;
 import pl.coderslab.charity.service.CategoryService;
 import pl.coderslab.charity.service.DonationService;
@@ -56,7 +55,7 @@ public class DonationController {
     }
 
     @PostMapping("/add")
-    public String addDonation(@Valid Donation donation, BindingResult result, Model model) {
+    public String addDonation(@Valid Donation donation, BindingResult result) {
 
         if (result.hasErrors()) {
             return "form";
@@ -73,22 +72,25 @@ public class DonationController {
     @GetMapping("/userDonation")
     public String userDonation(Model model) {
 
-        List<Donation> donations = donationService.findAllbyUser(userService.findByEmail(userInSessionService.getUserFromSessionByLogin()));
-        model.addAttribute("donations", donations);
+
+        model.addAttribute("donations", donationService.findAllbyUser(userService.findByEmail(userInSessionService.getUserFromSessionByLogin())));
         return "user-donation";
     }
 
-    @GetMapping("/detail")
-    public String donation(@RequestParam int id, Model model) {
+    @GetMapping("/{id}/detail")
+    public String donation(@PathVariable int id, Model model) {
         String userInSessionLogin = userInSessionService.getUserFromSessionByLogin();
         Donation donation = donationService.findById(id);
         User user = userService.findByDonation(donation);
+
+        //Secure !! you can only see your own donations not another users!!
+
         if (user != null && user.getEmail().equals(userInSessionLogin)) {
             model.addAttribute("donation", donation);
 
             return "donation-detail";
         }
-        return "donation-detail";
+        return "redirect:/app/donation/userDonation";
 
     }
 }

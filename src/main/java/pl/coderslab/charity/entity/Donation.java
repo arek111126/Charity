@@ -28,21 +28,25 @@ public class Donation {
     @Getter
     private int id;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Min(value = 1)
     private int quantity;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @ManyToMany
     @NotEmpty
     private List<Category> categories;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @ManyToOne
     @NotNull
     private Institution institution;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @NotBlank
     private String street;
 
@@ -51,11 +55,13 @@ public class Donation {
     @NotBlank
     private String city;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @NotBlank
     private String zipCode;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @NotBlank
     private String phone;
 
@@ -65,30 +71,37 @@ public class Donation {
     private LocalDateTime pickUpDateTime;
 
     @Transient
-    @Getter @Setter
+    @Getter
+    @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
     private LocalDate pickUpDate;
 
     @Transient
-    @Getter @Setter
+    @Getter
+    @Setter
     @NotNull
     private LocalTime pickUpTime;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String pickUpComment;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private int received;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String creationDate;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime realPickUpDateTime;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @ManyToOne
     @JsonIgnore
     private User user;

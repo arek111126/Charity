@@ -89,7 +89,7 @@
                 <td th:text="${donation.received} ? 'Odebrany' : 'Nie odebrany'" />
                 <td th:text="${donation.realPickUpDateTime} ? ${donation.realPickUpDateTime} : ''"></td>
                 <td  th:text="${donation.creationDate}"></td>
-                <td><a style="text-decoration: underline" th:href="@{/app/donation/detail(id=${donation.id})}">szczegóły</a></td>
+                <td><a style="text-decoration: underline" th:href="@{/app/donation/{id}/detail(id=${donation.id})}">szczegóły</a></td>
             </tr>
 
         </table>

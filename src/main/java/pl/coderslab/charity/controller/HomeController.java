@@ -48,7 +48,7 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String registerNewUser(@ModelAttribute User user, Model model) {
+    public String registerNewUser(@ModelAttribute User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setRetypePassword(encodedPassword);

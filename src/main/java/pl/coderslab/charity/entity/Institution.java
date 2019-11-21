@@ -20,18 +20,22 @@ public class Institution {
     @Getter
     private int id;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String name;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String description;
 
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @ManyToMany
     private List<Category> categories;
 
     @Transient
-    @Getter @Setter
+    @Getter
+    @Setter
     private int hiddenId;
 }

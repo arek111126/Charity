@@ -2,6 +2,7 @@ package pl.coderslab.charity.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,11 +19,13 @@ public class Category {
     @Getter
     private int id;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String name;
 
     @JsonIgnore
-    @Getter @Setter
+    @Getter
+    @Setter
     @ManyToMany(mappedBy = "categories")
     private List<Institution> institutions;
 

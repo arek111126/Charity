@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-public class InstitutionController {
+public class InstitutionAdminController {
 
     @Autowired
     InstitutionService institutionService;
@@ -67,7 +67,7 @@ public class InstitutionController {
     }
 
     @PostMapping("/institution/edit")
-    public String editInstitution(@ModelAttribute("institution") Institution institution, Model model) {
+    public String editInstitution(@ModelAttribute("institution") Institution institution) {
         Institution institutionFromDatabase = institutionService.findById(institution.getHiddenId());
         institutionFromDatabase.setCategories(institution.getCategories());
         institutionFromDatabase.setDescription(institution.getDescription());

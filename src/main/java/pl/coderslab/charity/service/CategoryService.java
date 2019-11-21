@@ -26,6 +26,7 @@ public class CategoryService {
     public Category findById(int id) {
         return categoryRepository.findFirstById(id);
     }
+
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }

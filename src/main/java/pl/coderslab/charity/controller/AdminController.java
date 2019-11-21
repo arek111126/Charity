@@ -1,7 +1,4 @@
 package pl.coderslab.charity.controller;
-
-
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,7 +12,6 @@ import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.RoleService;
 import pl.coderslab.charity.service.UserService;
 
-import javax.swing.*;
 import java.util.List;
 
 @Controller
@@ -54,20 +50,21 @@ public class AdminController {
 
 
     @GetMapping("/all")
-    public String ShowAllAdmins(Model model){
+    public String ShowAllAdmins(Model model) {
 
-        model.addAttribute("users",userService.findUsersByRolesContains(roleService.findFirstByRoleName("ROLE_ADMIN")));
+        model.addAttribute("users", userService.findUsersByRolesContains(roleService.findFirstByRoleName("ROLE_ADMIN")));
 
         return "adminTemplates/all-admin";
     }
+
     @PostMapping("/{id}/delete")
-    public String deleteUser(@PathVariable int id, Model model) {
+    public String deleteUser(@PathVariable int id) {
         userService.delete(userService.findById(id));
         return "redirect:/admin/all";
     }
 
     @PostMapping("/{id}/block")
-    public String blockUser(@PathVariable int id, Model model) {
+    public String blockUser(@PathVariable int id) {
         User user = userService.findById(id);
         user.setRetypePassword(user.getPassword());
         if (user.getEnabled() == 1) {
@@ -86,14 +83,16 @@ public class AdminController {
         model.addAttribute("user", user);
         return "adminTemplates/edit-admin";
     }
+
     @PostMapping("/edit")
     public String editUser(@ModelAttribute("user") User user) {
+        //find current user and edit. For update databse necessery is id so i muss find full user entity from database ( @Setter for id from security reason is disable )
         User userFromDatabase = userService.findById(user.getHiddenId());
         if (user.isChangePassword()) {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             userFromDatabase.setPassword(encodedPassword);
             userFromDatabase.setRetypePassword(encodedPassword);
-        }else{
+        } else {
             userFromDatabase.setRetypePassword(userFromDatabase.getPassword());
         }
         userFromDatabase.setFirstName(user.getFirstName());
@@ -105,10 +104,25 @@ public class AdminController {
         return "redirect:/admin/all";
     }
 
+    @GetMapping("/add")
+    public String getAddUserForm(Model model) {
+        model.addAttribute("user", new User());
 
+        return "adminTemplates/add-admin";
+    }
 
+    @PostMapping("/add")
+    public String addNewUser(@ModelAttribute("user") User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setRetypePassword(encodedPassword);
+        user.setEnabled(1);
+        user.getRoles().add(roleService.findFirstByRoleName("ROLE_USER"));
+        user.getRoles().add(roleService.findFirstByRoleName("ROLE_ADMIN"));
+        userService.save(user);
 
-
+        return "redirect:/admin/add";
+    }
 
 
 }

@@ -28,12 +28,12 @@ public class DonationService {
         return donatioRepository.findFirstById(id);
     }
 
-    public StatisticData countStatisticData(){
+    public StatisticData countStatisticData() {
         return donatioRepository.countStatisticData();
     }
 
 
-    public List<Donation> findAllbyUser(User user){
+    public List<Donation> findAllbyUser(User user) {
         return donatioRepository.findAllByUser(user);
     }
 }
