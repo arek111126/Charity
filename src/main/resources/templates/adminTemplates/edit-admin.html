@@ -278,20 +278,6 @@
                             <input type="text" class="form-control form-control-user" th:field="*{secondName}"
                                    placeholder="wprowadź nazwisko">
                         </div>
-                        <div class="custom-control custom-checkbox categ checboxChangePass categ" >
-                            <input type="checkbox" class="custom-control-input" th:field="*{changePassword}"
-                                   th:value="1">
-                            <label class="custom-control-label" th:for="${#ids.prev('changePassword')}"
-                                   >Zmień hasło</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control form-control-user" th:field="*{password}"
-                                   placeholder="wprowadź hasło">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control form-control-user" th:field="*{retypePassword}"
-                                   placeholder="powtórz hasło">
-                        </div>
                         <div class="form-group">
                             <div class="custom-control custom-checkbox small">
                                 <input type="checkbox" class="custom-control-input" id="customCheck">
@@ -302,6 +288,9 @@
 
 
                     </form>
+                <form method="get" class="user" th:action="@{'/admin/'+${user.id}+'/changePassword'}">
+                    <button style="margin-top: 10px" type="submit" class="btn btn-primary btn-user btn-block">Zmień hasło</button>
+                </form>
                 </div>
             </div>
             <!-- /.container-fluid -->

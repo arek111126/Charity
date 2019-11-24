@@ -47,7 +47,7 @@ public class DonationController {
 
     @GetMapping("/add")
     public String getForm(Model model) {
-
+        model.addAttribute("user",userService.findByEmail(userInSessionService.getUserFromSessionByLogin()));
         model.addAttribute("donation", new Donation());
 
         return "form";
@@ -72,7 +72,7 @@ public class DonationController {
     @GetMapping("/userDonation")
     public String userDonation(Model model) {
 
-
+        model.addAttribute("user",userService.findByEmail(userInSessionService.getUserFromSessionByLogin()));
         model.addAttribute("donations", donationService.findAllbyUser(userService.findByEmail(userInSessionService.getUserFromSessionByLogin())));
         return "user-donation";
     }
@@ -82,9 +82,8 @@ public class DonationController {
         String userInSessionLogin = userInSessionService.getUserFromSessionByLogin();
         Donation donation = donationService.findById(id);
         User user = userService.findByDonation(donation);
-
+        model.addAttribute("user",user);
         //Secure !! you can only see your own donations not another users!!
-
         if (user != null && user.getEmail().equals(userInSessionLogin)) {
             model.addAttribute("donation", donation);
 
@@ -92,5 +91,11 @@ public class DonationController {
         }
         return "redirect:/app/donation/userDonation";
 
+    }
+
+    @GetMapping("/{id}/changeStatus")
+    public String changeStatus(@PathVariable int id){
+        donationService.changeStatus(id);
+        return "redirect:/app/donation/"+id+"/detail";
     }
 }

@@ -1,123 +1,122 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Document</title>
-  <link th:href="@{/css/style.css}" rel="stylesheet"/>
-  <link th:href="@{/css/local.css}" rel="stylesheet"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/local.css}" rel="stylesheet"/>
 
-  <script th:src="@{https://www.w3schools.com/lib/w3.js}"></script>
-  <style>
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
+    <script th:src="@{https://www.w3schools.com/lib/w3.js}"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-    th, td {
-      text-align: left;
-      padding: 8px;
-    }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
 
-    tr:nth-child(even){background-color: #f2f2f2}
-    tr:nth-child(odd) {background: #d9d9d9 }
-    th {
-      background-color: grey;
-      color: white;
-    }
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+
+        tr:nth-child(odd) {
+            background: #d9d9d9
+        }
+
+        th {
+            background-color: grey;
+            color: white;
+        }
 
 
+        .headerSortDown:after,
+        .headerSortUp:after {
+            content: ' ';
+            position: relative;
+            left: 2px;
+            border: 8px solid transparent;
+        }
 
-    .headerSortDown:after,
-    .headerSortUp:after {
-      content: ' ';
-      position: relative;
-      left: 2px;
-      border: 8px solid transparent;
-    }
+        .headerSortDown:after {
+            top: 10px;
+            border-top-color: silver;
+        }
 
-    .headerSortDown:after {
-      top: 10px;
-      border-top-color: silver;
-    }
+        .headerSortUp:after {
+            bottom: 15px;
+            border-bottom-color: silver;
+        }
 
-    .headerSortUp:after {
-      bottom: 15px;
-      border-bottom-color: silver;
-    }
+        .headerSortDown,
+        .headerSortUp {
+            padding-right: 10px;
+        }
 
-    .headerSortDown,
-    .headerSortUp {
-      padding-right: 10px;
-    }
-
-  </style>
+    </style>
 </head>
 <body>
 <header class="header--form-page">
-  <nav class="container container--70">
-    <ul class="nav--actions">
-      <li class="logged-user">
-        Witaj Agata
-        <ul class="dropdown">
-          <li><a href="#">Profil</a></li>
-          <li><a href="#">Moje zbiórki</a></li>
-          <li><a href="#">Wyloguj</a></li>
-        </ul>
-      </li>
-    </ul>
-
-    <ul>
-      <li><a href="index.html" class="btn btn--without-border active">Start</a></li>
-      <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
-      <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
-      <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-      <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
-    </ul>
-  </nav>
+    <nav th:replace="nav :: nav(name= ${user.firstName})"/>
 
 
     <section class="login-page" style="text-align: right">
-      <h2>Dane szczegółowe darowizny</h2>
-      <form>
-        <div class="form-group">
-          <label style="font-size: 15px" for="intitution">Organizacja:   </label>
-          <input type="text" name="intitution" id="intitution" disabled th:value="${donation.institution.name}"/>
-        </div>
-        <div class="form-group">
-          <label style="font-size: 15px" for="registrationData">Data utworzenia wpisu:   </label>
-          <input type="text" name="creationData" id="registrationData" disabled th:value="${donation.creationDate}"/>
-        </div>
-        <div class="form-group">
-          <label style="font-size: 15px" for="creationData">Data przekazania daru:   </label>
-          <input type="text" name="creationData" id="creationData" disabled th:value="${donation.realPickUpDateTime}"/>
-        </div>
-      </form>
-      <div class="form-group form-group--buttons">
-        <form method="get" th:action="@{/app/donation/userDonation}">
-          <button  class="btn" type="submit">Wstecz</button>
+        <h2>Dane szczegółowe darowizny</h2>
+        <form>
+            <div class="form-group">
+                <label style="font-size: 15px" for="intitution">Organizacja: </label>
+                <input type="text" name="intitution" id="intitution" disabled th:value="${donation.institution.name}"/>
+            </div>
+            <div class="form-group">
+                <label style="font-size: 15px" for="registrationData">Data utworzenia wpisu: </label>
+                <input type="text" name="creationData" id="registrationData" disabled
+                       th:value="${donation.creationDate}"/>
+            </div>
+            <div class="form-group">
+                <label style="font-size: 15px" for="donationStatus">Status daru</label>
+                <input type="text" name="creationData" id="donationStatus" disabled
+                       th:value="${donation.received} ? 'Odebrany' : 'Nie odebrany'"/>
+            </div>
+            <div class="form-group">
+                <label style="font-size: 15px" for="pickupDeclarationData">Zadeklarowana data przekazania daru: </label>
+                <input type="text" name="creationData" id="pickupDeclarationData" disabled
+                       th:value="${donation.pickUpDateTime}"/>
+            </div>
+            <div class="form-group">
+                <label style="font-size: 15px" for="creationData">Data przekazania daru: </label>
+                <input type="text" name="creationData" id="creationData" disabled
+                       th:value="${donation.realPickUpDateTime}"/>
+            </div>
         </form>
-      </div>
+        <div class="form-group form-group--buttons">
+            <form method="get" th:action="@{/app/donation/userDonation}">
+                <button class="btn" type="submit">Wstecz</button>
+            </form>
+            <form method="get" th:action="@{'/app/donation/' + ${donation.id} + '/changeStatus'}">
+                <button class="btn" type="submit">Zmień status Daru</button>
+            </form>
+        </div>
 
-      <div style="padding-top: 15px;">
-      <table id="myTable" class="w3-table-all" style="font-size: 15px">
-        <tr>
-          <th style="cursor:pointer">Nazwa kategori</th>
-        </tr>
-        <tr class="item" th:each="category,iter : ${donation.categories}">
-          <td th:text="${category.name}" />
-        </tr>
+        <div style="padding-top: 15px;">
+            <table id="myTable" class="w3-table-all" style="font-size: 15px">
+                <tr>
+                    <th style="cursor:pointer">Nazwa kategori</th>
+                </tr>
+                <tr class="item" th:each="category,iter : ${donation.categories}">
+                    <td th:text="${category.name}"/>
+                </tr>
 
-      </table>
-      </div>
+            </table>
+        </div>
     </section>
 
 
-  </div>
+    </div>
 </header>
-
-
 
 
 <footer th:replace="footer :: footer"/>

@@ -1,4 +1,4 @@
-package pl.coderslab.charity.controller;
+package pl.coderslab.charity.controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -65,14 +65,7 @@ public class AdminController {
 
     @PostMapping("/{id}/block")
     public String blockUser(@PathVariable int id) {
-        User user = userService.findById(id);
-        user.setRetypePassword(user.getPassword());
-        if (user.getEnabled() == 1) {
-            user.setEnabled(0);
-        } else {
-            user.setEnabled(1);
-        }
-        userService.save(user);
+        userService.block(userService.findById(id));
         return "redirect:/admin/all";
     }
 
@@ -87,19 +80,7 @@ public class AdminController {
     @PostMapping("/edit")
     public String editUser(@ModelAttribute("user") User user) {
         //find current user and edit. For update databse necessery is id so i muss find full user entity from database ( @Setter for id from security reason is disable )
-        User userFromDatabase = userService.findById(user.getHiddenId());
-        if (user.isChangePassword()) {
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            userFromDatabase.setPassword(encodedPassword);
-            userFromDatabase.setRetypePassword(encodedPassword);
-        } else {
-            userFromDatabase.setRetypePassword(userFromDatabase.getPassword());
-        }
-        userFromDatabase.setFirstName(user.getFirstName());
-        userFromDatabase.setSecondName(user.getSecondName());
-        userFromDatabase.setEmail(user.getEmail());
-        userFromDatabase.setEnabled(1);
-        userService.save(userFromDatabase);
+        userService.editUserInfo(user);
 
         return "redirect:/admin/all";
     }
@@ -113,15 +94,25 @@ public class AdminController {
 
     @PostMapping("/add")
     public String addNewUser(@ModelAttribute("user") User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user.setRetypePassword(encodedPassword);
-        user.setEnabled(1);
+
         user.getRoles().add(roleService.findFirstByRoleName("ROLE_USER"));
         user.getRoles().add(roleService.findFirstByRoleName("ROLE_ADMIN"));
         userService.save(user);
 
         return "redirect:/admin/add";
+    }
+    @GetMapping("/{id}/changePassword")
+    public String editPasswordForm(@PathVariable int id, Model model) {
+        User user = userService.findById(id);
+        user.setHiddenId(id);
+        model.addAttribute("user", user);
+
+        return "adminTemplates/edit-admin-password";
+    }
+    @PostMapping("/changePassword")
+    public String editPasswordForm(@ModelAttribute("user") User user){
+        userService.editPassword(user);
+        return "redirect:/admin/"+user.getHiddenId()+"/edit";
     }
 
 

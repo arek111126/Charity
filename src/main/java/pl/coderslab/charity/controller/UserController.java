@@ -1,6 +1,5 @@
 package pl.coderslab.charity.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,12 +16,13 @@ import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.authentication.User;
 import pl.coderslab.charity.service.CategoryService;
 import pl.coderslab.charity.service.UserService;
+import pl.coderslab.charity.validateGroup.ValidationUserInfoGroup;
+import pl.coderslab.charity.validateGroup.ValidationUserPasswordGroup;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/app")
+@RequestMapping("/app/user")
 public class UserController {
 
     @Autowired
@@ -42,31 +42,46 @@ public class UserController {
         return categoryService.findAll();
     }
 
-    @GetMapping("/changeUserData")
-    public String getChangeDataForm(Model model){
+    @GetMapping("/changeBasicData")
+    public String getChangeDataForm(Model model) {
         User user = userService.findByEmail(userInSessionService.getUserFromSessionByLogin());
-        model.addAttribute("user",user);
-
-        return "change-user-data";
+        user.setHiddenId(user.getId());
+        model.addAttribute("user", user);
+        return "edit-user";
     }
 
 
-    @PostMapping("/changeUserData")
-    public String changeUserData(@Valid User user, BindingResult bindingResult,Model model){
-        if(bindingResult.hasErrors()){
-            return "change-user-data";
+    @PostMapping("/changeBasicData")
+    public String changeUserData(@Validated({ValidationUserInfoGroup.class}) User user, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+
+            return "edit-user";
         }
-        User userInSession = userService.findByEmail(userInSessionService.getUserFromSessionByLogin());
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        userInSession.setEmail(user.getEmail());
-        userInSession.setPassword(encodedPassword);
-        userInSession.setRetypePassword(encodedPassword);
-        userInSession.setFirstName(user.getFirstName());
-        userInSession.setSecondName(user.getSecondName());
-        userService.save(userInSession);
+        userService.editUserInfo(user);
         model.addAttribute("donation", new Donation());
 
         return "form";
 
     }
+
+    @GetMapping("/changePassword")
+    public String changeUserPasswordForm(Model model){
+        User user = userService.findByEmail(userInSessionService.getUserFromSessionByLogin());
+        user.setHiddenId(user.getId());
+        model.addAttribute("user",user);
+        return "edit-user-password";
+    }
+
+    @PostMapping("/changePassword")
+    public String changeUserPassword(@Validated({ValidationUserPasswordGroup.class}) User user, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+
+            return "edit-user-password";
+        }
+        userService.editPassword(user);
+        return "redirect:/app/user/changeBasicData";
+
+    }
+
 }

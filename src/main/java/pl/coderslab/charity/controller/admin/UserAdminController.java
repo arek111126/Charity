@@ -1,4 +1,4 @@
-package pl.coderslab.charity.controller;
+package pl.coderslab.charity.controller.admin;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,6 @@ public class UserAdminController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     RoleService roleService;
@@ -40,14 +38,8 @@ public class UserAdminController {
 
     @PostMapping("/user/{id}/block")
     public String blockUser(@PathVariable int id) {
-        User user = userService.findById(id);
-        user.setRetypePassword(user.getPassword());
-        if (user.getEnabled() == 1) {
-            user.setEnabled(0);
-        } else {
-            user.setEnabled(1);
-        }
-        userService.save(user);
+
+        userService.block(userService.findById(id));
         return "redirect:/admin/user/all";
     }
 
@@ -61,20 +53,22 @@ public class UserAdminController {
 
     @PostMapping("/user/edit")
     public String editUser(@ModelAttribute("user") User user) {
-        User userFromDatabase = userService.findById(user.getHiddenId());
-        if (user.isChangePassword()) {
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            userFromDatabase.setPassword(encodedPassword);
-            userFromDatabase.setRetypePassword(encodedPassword);
-        } else {
-            userFromDatabase.setRetypePassword(userFromDatabase.getPassword());
-        }
-        userFromDatabase.setFirstName(user.getFirstName());
-        userFromDatabase.setSecondName(user.getSecondName());
-        userFromDatabase.setEmail(user.getEmail());
-        userFromDatabase.setEnabled(1);
-        userService.save(userFromDatabase);
 
+        userService.editUserInfo(user);
         return "redirect:/admin/user/all";
+    }
+
+    @GetMapping("/user/{id}/changePassword")
+    public String editPasswordForm(@PathVariable int id, Model model) {
+        User user = userService.findById(id);
+        user.setHiddenId(id);
+        model.addAttribute("user", user);
+
+        return "adminTemplates/edit-user-password";
+    }
+    @PostMapping("/user/changePassword")
+    public String editPasswordForm(@ModelAttribute("user") User user){
+        userService.editPassword(user);
+        return "redirect:/admin/user/"+user.getHiddenId()+"/edit";
     }
 }

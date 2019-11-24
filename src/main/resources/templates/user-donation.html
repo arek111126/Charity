@@ -56,33 +56,14 @@
   </head>
   <body>
   <header class="header--form-page">
-    <nav class="container container--70">
-      <ul class="nav--actions">
-        <li class="logged-user">
-          Witaj Agata
-          <ul class="dropdown">
-            <li><a href="#">Profil</a></li>
-            <li><a href="#">Moje zbiórki</a></li>
-            <li><a href="#">Wyloguj</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      <ul>
-        <li><a href="index.html" class="btn btn--without-border active">Start</a></li>
-        <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
-        <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
-        <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-        <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
-      </ul>
-    </nav>
+      <nav th:replace="nav :: nav(name= ${user.firstName})"/>
 
     <div class="slogan container container--90">
         <table id="myTable" class="w3-table-all" style="font-size: 15px">
             <tr>
-                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Status Odebrania</th>
-                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Data Odebrania</th>
-                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Data utworzenia</th>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Status</th>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Data odebrania</th>
+                <th  class="headerSortDown" width="30%" onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">Data utworzenia</th>
                 <th  style="cursor:pointer">szczegóły</th>
             </tr>
             <tr class="item" th:each="donation,iter : ${donations}">

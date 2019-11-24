@@ -32,7 +32,10 @@ public class HomeController {
 
 
     @RequestMapping("/")
-    public String homeAction(Model model) {
+    public String homeAction(Model model)
+    {
+        User user = userService.findByEmail(userInSessionService.getUserFromSessionByLogin());
+        model.addAttribute("user", user != null ? user : new User());
         return "index";
     }
 
@@ -49,10 +52,6 @@ public class HomeController {
 
     @PostMapping("/register")
     public String registerNewUser(@ModelAttribute User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user.setRetypePassword(encodedPassword);
-        user.setEnabled(1);
         user.getRoles().add(roleService.findFirstByRoleName("ROLE_USER"));
         userService.save(user);
         return "redirect:/";
@@ -73,5 +72,7 @@ public class HomeController {
         return "redirect:/app/donation/add";
 
     }
+
+
 
 }
