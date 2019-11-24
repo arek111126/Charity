@@ -38,4 +38,15 @@ public class Institution {
     @Getter
     @Setter
     private int hiddenId;
+
+    @Override
+    public String toString() {
+        return "Institution{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", categories=" + categories +
+                ", hiddenId=" + hiddenId +
+                '}';
+    }
 }

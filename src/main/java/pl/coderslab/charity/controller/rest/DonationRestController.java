@@ -9,7 +9,7 @@ import pl.coderslab.charity.model.StatisticData;
 import pl.coderslab.charity.service.DonationService;
 
 @RestController
-@RequestMapping("/app/donation")
+@RequestMapping("/donation")
 public class DonationRestController {
 
     @Autowired

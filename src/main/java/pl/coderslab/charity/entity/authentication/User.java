@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.validate.ConfirmPassword;
+import pl.coderslab.charity.validateGroup.EmailValidationGroup;
 import pl.coderslab.charity.validateGroup.ValidationUserInfoGroup;
 import pl.coderslab.charity.validateGroup.ValidationUserPasswordGroup;
 
@@ -30,7 +31,7 @@ public class User {
 
     @Getter
     @Setter
-    @NotBlank(groups = ValidationUserInfoGroup.class)
+    @NotBlank(groups = {ValidationUserInfoGroup.class, EmailValidationGroup.class})
     @Email(groups = ValidationUserInfoGroup.class)
     private String email;
 

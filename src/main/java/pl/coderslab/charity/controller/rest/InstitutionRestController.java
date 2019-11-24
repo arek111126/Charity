@@ -14,13 +14,12 @@ import pl.coderslab.charity.service.InstitutionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("c")
 public class InstitutionRestController {
 
     @Autowired
     InstitutionService institutionService;
 
-    @GetMapping("/")
+    @GetMapping("/institution/all")
   public  List<Institution> getAllItem(){
         return institutionService.findAll();
 

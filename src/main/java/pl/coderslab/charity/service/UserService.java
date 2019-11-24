@@ -6,12 +6,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.config.UserInSessionService;
 import pl.coderslab.charity.entity.Donation;
+import pl.coderslab.charity.entity.authentication.ConfirmAccountToken;
 import pl.coderslab.charity.entity.authentication.Role;
 import pl.coderslab.charity.entity.authentication.User;
+import pl.coderslab.charity.repository.ConfirmAccountTokenRepository;
 import pl.coderslab.charity.repository.UserRepository;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -24,6 +29,19 @@ public class UserService {
 
     @Autowired
     UserInSessionService userInSessionService;
+
+    @Autowired
+    ConfirmAccountTokenRepository confirmAccountTokenRepository;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    SendTemplateService sendTemplateService;
+
 
     @Secured("ROLE_ADMIN")
     public User block(User user) {
@@ -38,11 +56,11 @@ public class UserService {
 
     }
 
-    public User editPassword(User user){
+    public User editPassword(User user) {
         User userFromDatabase = userRepository.findById(user.getHiddenId());
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         userFromDatabase.setPassword(encodedPassword);
-        return   userRepository.save(userFromDatabase);
+        return userRepository.save(userFromDatabase);
 
     }
 
@@ -58,11 +76,33 @@ public class UserService {
     public User save(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setRetypePassword(encodedPassword);
         user.setEnabled(1);
         return userRepository.save(user);
     }
 
+    public User createNewUser(User user) throws IOException, MessagingException {
+        user.getRoles().add(roleService.findFirstByRoleName("ROLE_USER"));
+        String token = UUID.randomUUID().toString();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setEnabled(0);
+        User newUser = userRepository.save(user);
+        createPasswordResetTokenForUser(newUser, token);
+
+        emailService.sendSimpleMessage(user.getEmail(), "Confirm mail", sendTemplateService
+                .readFromResources("templates/sendTemplate/activeAccount.html")
+                .replaceAll("hrefField", "href=\"http://localhost:8080/confirmAccount?token=" + token + "\""));
+
+        return newUser;
+
+
+    }
+
+    public void createPasswordResetTokenForUser(User user, String token) {
+        ConfirmAccountToken myToken = new ConfirmAccountToken(token, user);
+
+        confirmAccountTokenRepository.save(myToken);
+    }
 
     public User findByEmail(String email) {
         return userRepository.findFirstByEmail(email);

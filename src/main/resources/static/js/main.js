@@ -10,12 +10,12 @@ $(function () {
     }
 
     $.ajax({
-        url: "/app/institution/",
+        url: "/institution/all",
         data: {},
-        type: "GET",
-        dataType: "json"
+        type: "GET"
     }).done(function (result) {
-
+        console.log("items");
+        console.log(result);
 
         $.each(result, function (i, item) {
             var div = $("<div class=\"col\">\n" +
@@ -37,7 +37,7 @@ $(function () {
     });
 
     $.ajax({
-        url: "/app/donation/statistic",
+        url: "/donation/statistic",
         data: {},
         type: "GET",
         dataType: "json"

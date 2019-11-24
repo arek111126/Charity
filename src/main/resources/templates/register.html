@@ -5,7 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/local.css}" rel="stylesheet"/>
+    <style>
+        .categ {
+            width: 40%;
+            text-align: left;
+            margin: 0 auto;
+
+        }
+
+        .checboxChangePass {
+            margin-bottom: 10px;
+        }
+
+    </style>
 </head>
 <body>
 <header class="header--main-page">
@@ -22,12 +36,16 @@
 <section class="login-page" id="register">
     <h2>Załóż konto</h2>
     <form action="/register" th:object="${user}" method="POST">
+        <div class="alert" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
+        <div class="alert" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         <div class="form-group">
             <input type="email" name="email" placeholder="Email" th:field="*{email}"/>
         </div>
+        <div class="alert" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         <div class="form-group">
             <input type="password" name="password" placeholder="Hasło" th:field="*{password}"/>
         </div>
+        <div class="alert" th:if="${#fields.hasErrors('retypePassword')}" th:errors="*{retypePassword}"></div>
         <div class="form-group">
             <input type="password" name="password2" placeholder="Powtórz hasło" th:field="*{retypePassword}"/>
         </div>

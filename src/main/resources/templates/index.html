@@ -6,12 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Document</title>
     <link th:href="@{css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/local.css}" rel="stylesheet"/>
 
 </head>
 <body>
 <header class="header--main-page">
-    <nav th:replace="nav :: nav(name= ${user.firstName})"/>
-
+    <nav th:if="${user}" th:replace="nav :: nav(name= ${user.firstName})"/>
+    <div style="background-color: #33cc33" class="alert" th:if="${successAlert}" th:text="${successAlert}"></div>
+    <div  class="alert" th:if="${dengerAlert}" th:text="${dengerAlert}"></div>
     <div class="slogan container container--90">
         <div class="slogan--item">
             <h1>
