@@ -38,7 +38,7 @@ public class User {
     @Getter
     @Setter
     @NotBlank(groups = ValidationUserPasswordGroup.class)
-    @Size(min = 8, groups = ValidationUserPasswordGroup.class)
+    @Size(min = 8,max = 30, groups = ValidationUserPasswordGroup.class)
     @Pattern(regexp = ".*[a-z]+.*", groups = ValidationUserPasswordGroup.class, message = "{pl.coderslab.charity.entity.authentication.User.upper.case}")
     @Pattern(regexp = ".*[A-Z]+.*", groups = ValidationUserPasswordGroup.class, message = "{pl.coderslab.charity.entity.authentication.User.lower.case}")
     @Pattern(regexp = ".*\\d+.*", groups = ValidationUserPasswordGroup.class, message = "{pl.coderslab.charity.entity.authentication.User.digits}")
@@ -51,7 +51,7 @@ public class User {
     @Setter
     @Transient
     @NotBlank(groups = ValidationUserPasswordGroup.class)
-    @Size(min = 8,max = 30,groups = ValidationUserPasswordGroup.class)
+    @Size(min = 8, max = 30, groups = ValidationUserPasswordGroup.class)
     private String retypePassword;
 
 

@@ -12,7 +12,7 @@
 <body>
 <header class="header--main-page">
     <nav th:if="${user}" th:replace="nav :: nav(name= ${user.firstName})"/>
-    <div style="background-color: #33cc33" class="alert" th:if="${successAlert}" th:text="${successAlert}"></div>
+    <div style="background-color: #249124" class="alert" th:if="${successAlert}" th:text="${successAlert}"></div>
     <div  class="alert" th:if="${dengerAlert}" th:text="${dengerAlert}"></div>
     <div class="slogan container container--90">
         <div class="slogan--item">

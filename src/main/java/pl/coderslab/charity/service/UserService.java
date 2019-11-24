@@ -6,15 +6,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.config.UserInSessionService;
 import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.authentication.ConfirmAccountToken;
+import pl.coderslab.charity.entity.token.ConfirmAccountToken;
 import pl.coderslab.charity.entity.authentication.Role;
 import pl.coderslab.charity.entity.authentication.User;
+import pl.coderslab.charity.entity.token.ForgotPasswordToken;
+import pl.coderslab.charity.exception.NotFoundUserException;
 import pl.coderslab.charity.repository.ConfirmAccountTokenRepository;
 import pl.coderslab.charity.repository.UserRepository;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,10 @@ public class UserService {
     EmailService emailService;
 
     @Autowired
-    SendTemplateService sendTemplateService;
+    SentTemplateService sentTemplateService;
+
+    @Autowired
+    ForgotPasswordTokenService forgotPasswordTokenService;
 
 
     @Secured("ROLE_ADMIN")
@@ -89,7 +93,7 @@ public class UserService {
         User newUser = userRepository.save(user);
         createPasswordResetTokenForUser(newUser, token);
 
-        emailService.sendSimpleMessage(user.getEmail(), "Confirm mail", sendTemplateService
+        emailService.sendSimpleMessage(user.getEmail(), "Confirm account activity", sentTemplateService
                 .readFromResources("templates/sendTemplate/activeAccount.html")
                 .replaceAll("hrefField", "href=\"http://localhost:8080/confirmAccount?token=" + token + "\""));
 
@@ -138,4 +142,15 @@ public class UserService {
     }
 
 
+    public void sendPasswordAndSetToken(User user) throws NotFoundUserException, IOException, MessagingException {
+        User foundedUser = userRepository.findFirstByEmail(user.getEmail());
+        if (foundedUser == null) {
+            throw new NotFoundUserException("Nie istnieje użytkownik o podanym loginie");
+        }
+        String token = UUID.randomUUID().toString();
+        forgotPasswordTokenService.save(new ForgotPasswordToken(token, foundedUser));
+        emailService.sendSimpleMessage(user.getEmail(), "Forgot Password Charity", sentTemplateService
+                .readFromResources("templates/sendTemplate/forgot-password.html")
+                .replaceAll("hrefField", "href=\"http://localhost:8080/setNewPassword?token=" + token + "#newPassword" + "\""));
+    }
 }

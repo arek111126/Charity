@@ -10,7 +10,6 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(name = "institution")
 public class Institution {
@@ -39,14 +38,5 @@ public class Institution {
     @Setter
     private int hiddenId;
 
-    @Override
-    public String toString() {
-        return "Institution{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", categories=" + categories +
-                ", hiddenId=" + hiddenId +
-                '}';
-    }
+
 }

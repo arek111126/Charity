@@ -1,31 +1,33 @@
-package pl.coderslab.charity.entity.authentication;
+package pl.coderslab.charity.entity.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.coderslab.charity.entity.authentication.User;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "confirm_account_token")
-public class ConfirmAccountToken {
+@Table(name = "forgot_password_token")
+public class ForgotPasswordToken {
 
-  
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     private Long id;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String token;
-  
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
-    @Getter @Setter
+    @Getter
+    @Setter
     private User user;
 
 
@@ -38,7 +40,7 @@ public class ConfirmAccountToken {
                 '}';
     }
 
-    public ConfirmAccountToken(String token, User user) {
+    public ForgotPasswordToken(String token, User user) {
         this.token = token;
         this.user = user;
     }

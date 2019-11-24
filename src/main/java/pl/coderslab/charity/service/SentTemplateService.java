@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 @Component
-public class SendTemplateService {
+public class SentTemplateService {
 
     private String readFromInputStream(InputStream inputStream)
             throws IOException {

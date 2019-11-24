@@ -66,9 +66,12 @@ public class UserAdminController {
 
         return "adminTemplates/edit-user-password";
     }
+
     @PostMapping("/user/changePassword")
-    public String editPasswordForm(@ModelAttribute("user") User user){
+    public String editPasswordForm(@ModelAttribute("user") User user) {
         userService.editPassword(user);
-        return "redirect:/admin/user/"+user.getHiddenId()+"/edit";
+        return "redirect:/admin/user/" + user.getHiddenId() + "/edit";
     }
+
+
 }

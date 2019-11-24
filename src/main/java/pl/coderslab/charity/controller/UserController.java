@@ -83,5 +83,4 @@ public class UserController {
         return "redirect:/app/user/changeBasicData";
 
     }
-
 }

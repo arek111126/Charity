@@ -1,7 +1,6 @@
 package pl.coderslab.charity.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +9,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.config.UserInSessionService;
 import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.authentication.ConfirmAccountToken;
+import pl.coderslab.charity.entity.token.ConfirmAccountToken;
 import pl.coderslab.charity.entity.authentication.User;
+import pl.coderslab.charity.entity.token.ForgotPasswordToken;
+import pl.coderslab.charity.exception.InvalidPasswrodTokenException;
+import pl.coderslab.charity.exception.NotFoundUserException;
 import pl.coderslab.charity.service.ConfirmAccountTokenService;
+import pl.coderslab.charity.service.ForgotPasswordTokenService;
 import pl.coderslab.charity.service.RoleService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.validateGroup.EmailValidationGroup;
@@ -40,6 +43,9 @@ public class HomeController {
     @Autowired
     ConfirmAccountTokenService confirmAccountTokenService;
 
+
+    @Autowired
+    ForgotPasswordTokenService forgotPasswordTokenService;
 
     @RequestMapping("/")
     public String homeAction(Model model) {
@@ -108,6 +114,65 @@ public class HomeController {
         model.addAttribute("successAlert", "Konto zostało aktywowane");
         return "index";
 
+    }
+
+    @GetMapping("/forgotPassword")
+    public String getForgotPasswordTemplate() {
+        return "forgot-password";
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPasswordSendMessage(@ModelAttribute("user") User user, Model model) {
+        try {
+            userService.sendPasswordAndSetToken(user);
+        } catch (NotFoundUserException | IOException | MessagingException e) {
+            e.printStackTrace();
+            model.addAttribute("dengerAlert", e.getMessage());
+            return "forgot-password";
+
+        }
+
+        model.addAttribute("successAlert", "Email do zmiany hasła został wysłany");
+        return "index";
+    }
+
+    @GetMapping("/setNewPassword")
+    public String setPasswordTemplate(@RequestParam String token, Model model) {
+        model.addAttribute("user", new User());
+        ForgotPasswordToken tokenObj;
+        try {
+            tokenObj = forgotPasswordTokenService.findByToken(token);
+        } catch (InvalidPasswrodTokenException e) {
+            model.addAttribute("dengerAlert", e.getMessage());
+            return "index";
+        }
+        User user = new User();
+        user.setHiddenId(tokenObj.getUser().getId());
+        model.addAttribute("user", user);
+        return "edit-forgot-user-password";
+    }
+
+    @PostMapping("/setNewForgottenPassword")
+    public String changePasswordAfterRemind(@Validated({ValidationUserPasswordGroup.class}) User user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("dengerAlert","Wprowadzono niepoprawne hasło!");
+            return "edit-forgot-user-password";
+        }
+        ForgotPasswordToken forgotPasswordToken;
+        User userFounded = userService.findById(user.getHiddenId());
+        try {
+            //check if doesnt exist that mean throw nex eception and stop process
+            forgotPasswordToken = forgotPasswordTokenService.findByEmail(userFounded.getEmail());
+        } catch (InvalidPasswrodTokenException e) {
+            e.printStackTrace();
+            model.addAttribute("dengerAlert", e.getMessage());
+            return "index";
+        }
+
+        userService.editPassword(user);
+        forgotPasswordTokenService.delete(forgotPasswordToken);
+        model.addAttribute("successAlert", "Hasło zostało zmienione");
+        return "index";
     }
 
 
